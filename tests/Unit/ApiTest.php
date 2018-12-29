@@ -5,11 +5,15 @@ namespace Tests\Unit;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 use App\User;
 
 class ApiTest extends TestCase
 {
+
+	use DatabaseMigrations;
+
     /**
      * A basic test example.
      *
@@ -37,7 +41,7 @@ class ApiTest extends TestCase
     public function testUserLogin() {
 
     	$response = $this->json('POST', '/api/login', [
-    		'email' => 'test1@test.com',
+    		'email' => 'varun@test.com',
     		'password' => 'secret'
     	]);
 
