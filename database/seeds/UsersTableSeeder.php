@@ -1,0 +1,23 @@
+<?php
+
+use Illuminate\Database\Seeder;
+
+use App\User;
+
+class UsersTableSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+
+    	$user = factory(User::class, 1)->make()->first();
+    	$user->email = "test@test.com";
+    	$user->save();
+
+        factory(User::class, 2)->create();
+    }
+}
