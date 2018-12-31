@@ -13,7 +13,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        auth()->once(['email' => 'test@test.com', 'password' => 'secret']);
     }
 
     /**
@@ -23,6 +23,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+
+        app()->bind(\App\User::class, function() {
+            return auth()->user();
+        });
+
     }
 }

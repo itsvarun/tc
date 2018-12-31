@@ -11,7 +11,10 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+// Route::view('/', 'welcome');
+
+Route::get('/user', function (App\User $user) {
+    return $user;
 });
 
+Route::get('/{any}', 'SinglePageController@index')->where('any', '.*');
