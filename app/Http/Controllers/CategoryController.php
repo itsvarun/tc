@@ -18,16 +18,6 @@ class CategoryController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -35,7 +25,9 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        return ['status' => true, 'message' => 'Category created'];
+        $category = Category::create($this->validate($request));
+
+        return $this->response($category, 'Category created', 'Error creating category');
     }
 
     /**
@@ -46,18 +38,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Category  $category
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Category $category)
-    {
-        //
+        return $category;
     }
 
     /**
@@ -69,7 +50,9 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
+        $status = $category->update($this->validate($request));
+
+        return $this->response($$status, 'Category updated', 'Error updating category');
     }
 
     /**
@@ -80,6 +63,40 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        return ['status' => true, 'message' => 'Category deleted'];
+        $status = $category->delete();
+
+        return $this->response($status, 'Category deleted', 'Error deleting category');
+    }
+
+    /**
+     * return all tasks assoicated with a category in order of field 'order'
+     *
+     * @param  \App\Category  $category
+     * @return \Illuminate\Http\Response
+     */
+
+    public function tasks(Category $category)
+    {
+        return $category
+            ->tasks()
+            ->orderBy('order')
+            ->get();
+    }
+
+    private function validate($request) {
+        return $request->validate($this->rules());
+    }
+
+    private function rules() {
+        return [
+            'name' => 'requried'
+        ];
+    }
+
+    private function response($category, $successMessage, $failureMessage) {
+        return [
+            'status' => (bool) $category,
+            'message' => $category ? $successMessage : $failureMessage
+        ];
     }
 }

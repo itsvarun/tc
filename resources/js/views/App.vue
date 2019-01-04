@@ -12,7 +12,11 @@
                     <ul class="navbar-nav mr-auto"></ul>
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-link"> Hi, There</li>
+                        <!-- Authentication Links -->
+                        <router-link :to="{ name: 'login' }" class="nav-link" v-if="!isLoggedIn">Login</router-link>
+                        <router-link :to="{ name: 'register' }" class="nav-link" v-if="!isLoggedIn">Register</router-link>
+                        <li class="nav-link" v-if="isLoggedIn"> Hi, {{name}}</li>
+                        <router-link :to="{ name: 'board' }" class="nav-link" v-if="isLoggedIn">Board</router-link>
                     </ul>
                 </div>
             </div>
@@ -23,5 +27,16 @@
     </div>
 </template>
 <script>
-export default {};
+export default {
+    data(){
+        return {
+            isLoggedIn : null,
+            name : null
+        }
+    },
+    mounted(){
+        this.isLoggedIn = localStorage.getItem('jwt')
+        this.name = localStorage.getItem('user')
+    }
+};
 </script>

@@ -36137,7 +36137,7 @@ if (token) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\Users\home\Desktop\work\projects\trello-clone\resources\js\bootstrap.js */"./resources/js/bootstrap.js");
+module.exports = __webpack_require__(/*! E:\Content\Laravel\trello-clone\resources\js\bootstrap.js */"./resources/js/bootstrap.js");
 
 
 /***/ })

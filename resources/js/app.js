@@ -4,16 +4,34 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 import App from './views/App'
-import Welcome from './views/Welcome'
+import Home from './views/Home'
+import Board from './views/Board'
+import Login from './views/Login'
+import Register from './views/Register'
 
 const router = new VueRouter({
 	mode: 'history',
 	routes: [
-		{
-			path: '/',
-			name: 'home',
-			component: Welcome
-		},
+        {
+            path: '/',
+            name: 'home',
+            component: Home
+        },
+        {
+            path: '/login',
+            name: 'login',
+            component: Login
+        },
+        {
+            path: '/register',
+            name: 'register',
+            component: Register
+        },
+        {
+            path: '/board',
+            name: 'board',
+            component: Board
+        },
 	],
 })
 

@@ -14,17 +14,7 @@ class TaskController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return Task::all();
     }
 
     /**
@@ -35,20 +25,9 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        $task = Task::create($request->only([
-            'name',
-            'category_id',
-            'user_id',
-            'order'
-        ]));
+        $task = Task::create($this->validate($request));
 
-        $data = [
-            'data' => $task,
-            'status' => (bool) $task,
-            'message' => $task ? 'Task created' : 'Error creating task',
-        ];
-
-        return $data;
+        return $this->response($task, 'Task created', 'Error creating task', true);
     }
 
     /**
@@ -59,18 +38,7 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Task  $task
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Task $task)
-    {
-        //
+        return $task;
     }
 
     /**
@@ -82,7 +50,9 @@ class TaskController extends Controller
      */
     public function update(Request $request, Task $task)
     {
-        //
+        $status = $task->update($this->validate($request));
+
+        return $this->response($status, 'Task updated', 'Error updating task');
     }
 
     /**
@@ -93,6 +63,36 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        //
+        $status = $task->delete();
+
+        return $this->response($status, 'Task deleted', 'Error deleting task');
+    }
+
+    public function validate($request) {
+        return $request->validate($this->rules());
+    }
+
+    public function rules() {
+        return [
+            'user_id' => 'bail|required|exists:users,id',
+            'category_id' => 'bail|required|exists:categories,id'
+            'name' => 'bail|required',
+            'order' => 'required|integer'
+        ];
+    }
+
+    public function response($status, $successMessage, $failureMessage, $sendData = false) {
+
+        $response = [
+            'status' => (bool) $status,
+            'message' => $status ? $successMessage : $failureMessage
+        ];
+
+        if ($sendData) {
+            $response['data'] = $status;
+        }
+
+        return $response;
+
     }
 }
