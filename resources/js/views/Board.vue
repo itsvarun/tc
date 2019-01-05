@@ -71,14 +71,20 @@ textarea {
         },
         methods : {
             addNew(id) {
+
+                console.log('adding new task')
+
                 let user_id = 1
                 let name = "New task"
                 let category_id = this.categories[id].id
                 let order = this.categories[id].tasks.length
 
-                axios.post('api/task', {user_id, name, order, category_id}).then(response => {
-                    this.categories[id].tasks.push(response.data.data)
-                })
+                axios.post('api/task', {user_id, name, order, category_id})
+                    .then(response => {
+                        this.categories[id].tasks.push(response.data.data)
+                    }).catch(error => {
+                        console.log(error)
+                    })
             },
             changeOrder(data) {
                 let toTask = data.to
@@ -107,6 +113,9 @@ textarea {
                   })
                 })
             },
+            editTask(task){
+                this.editingTask = task
+            }
         },
         mounted() {
             let token = localStorage.getItem('jwt')

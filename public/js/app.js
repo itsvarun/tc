@@ -223,6 +223,7 @@ __webpack_require__.r(__webpack_exports__);
     addNew: function addNew(id) {
       var _this = this;
 
+      console.log('adding new task');
       var user_id = 1;
       var name = "New task";
       var category_id = this.categories[id].id;
@@ -234,6 +235,8 @@ __webpack_require__.r(__webpack_exports__);
         category_id: category_id
       }).then(function (response) {
         _this.categories[id].tasks.push(response.data.data);
+      }).catch(function (error) {
+        console.log(error);
       });
     },
     changeOrder: function changeOrder(data) {
@@ -264,6 +267,9 @@ __webpack_require__.r(__webpack_exports__);
           category.tasks = response.data;
         });
       });
+    },
+    editTask: function editTask(task) {
+      this.editingTask = task;
     }
   },
   mounted: function mounted() {

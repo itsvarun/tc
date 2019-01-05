@@ -13,8 +13,8 @@
 
 // Route::view('/', 'welcome');
 
-Route::get('/user', function (App\User $user) {
-    return $user;
+Route::get('/hello', function () {
+    return request()->method();
 });
 
 Route::get('/{any}', 'SinglePageController@index')->where('any', '.*');

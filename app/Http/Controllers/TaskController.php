@@ -3,18 +3,29 @@
 namespace App\Http\Controllers;
 
 use App\Task;
+use App\User;
+use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
+    function __construct() {
+        $this->middleware('can:update,task')
+            ->only([
+                'show',
+                'update',
+                'destroy'
+            ]);
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(User $user)
     {
-        return Task::all();
+        return $user->tasks;
     }
 
     /**
@@ -25,7 +36,8 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        $task = Task::create($this->validate($request));
+
+        $task = Task::create($this->validateTask($request));
 
         return $this->response($task, 'Task created', 'Error creating task', true);
     }
@@ -50,7 +62,7 @@ class TaskController extends Controller
      */
     public function update(Request $request, Task $task)
     {
-        $status = $task->update($this->validate($request));
+        $status = $task->update($this->validateTask($request));
 
         return $this->response($status, 'Task updated', 'Error updating task');
     }
@@ -68,16 +80,31 @@ class TaskController extends Controller
         return $this->response($status, 'Task deleted', 'Error deleting task');
     }
 
-    public function validate($request) {
-        return $request->validate($this->rules());
+    public function validateTask($request) {
+        return $request->validate($this->rules($request));
     }
 
-    public function rules() {
+    public function rules($request) {
+
+        $requiredIf = Rule::requiredIf($request->method() == "POST");
+
         return [
-            'user_id' => 'bail|required|exists:users,id',
-            'category_id' => 'bail|required|exists:categories,id'
-            'name' => 'bail|required',
-            'order' => 'required|integer'
+            'user_id' => [
+                $requiredIf,
+                'exists:users,id'
+            ],
+            'category_id' => [
+                $requiredIf,
+                'exists:categories,id'
+            ],
+            'name' => [
+                $requiredIf,
+                'min:3'
+            ],
+            'order' => [
+                $requiredIf,
+                'integer'
+            ]
         ];
     }
 

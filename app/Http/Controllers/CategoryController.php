@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -25,7 +26,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $category = Category::create($this->validate($request));
+        $category = Category::create($this->validateCategory($request));
 
         return $this->response($category, 'Category created', 'Error creating category');
     }
@@ -50,7 +51,7 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        $status = $category->update($this->validate($request));
+        $status = $category->update($this->validateCategory($request));
 
         return $this->response($$status, 'Category updated', 'Error updating category');
     }
@@ -83,17 +84,17 @@ class CategoryController extends Controller
             ->get();
     }
 
-    private function validate($request) {
+    public function validateCategory($request) {
         return $request->validate($this->rules());
     }
 
-    private function rules() {
+    public function rules() {
         return [
             'name' => 'requried'
         ];
     }
 
-    private function response($category, $successMessage, $failureMessage) {
+    public function response($category, $successMessage, $failureMessage) {
         return [
             'status' => (bool) $category,
             'message' => $category ? $successMessage : $failureMessage

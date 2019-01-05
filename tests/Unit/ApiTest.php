@@ -12,17 +12,7 @@ use App\User;
 class ApiTest extends TestCase
 {
 
-	use DatabaseMigrations;
-
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
-    public function testExample()
-    {
-        $this->assertTrue(true);
-    }
+	// use DatabaseMigrations;
 
     public function testUserCreation() {
 

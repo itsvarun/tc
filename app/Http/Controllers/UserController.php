@@ -15,6 +15,7 @@ class UserController extends Controller
 
     	if (Auth::attempt($credentials)) {
 
+            $success['user'] = Auth::user()->name;
     		$success['token'] = Auth::user()->createToken('MyApp')->accessToken;
 
     		return compact('success');
@@ -50,7 +51,7 @@ class UserController extends Controller
     	return ['success' => Auth::user()];
     }
 
-    private function error($data, $statusCode = 403) {
+    public function error($data, $statusCode = 403) {
     	return response()->json([
     		'error' => $data
     	], $statusCode);

@@ -14,7 +14,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        'App\Model' => 'App\Policies\ModelPolicy',
+        'App\Task' => 'App\Policies\TaskPolicy',
     ];
 
     /**
@@ -27,6 +27,12 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Passport::routes();
+    }
+
+    public function register() {
+        Gate::define('update-category', function ($user, $category) {
+            return $user->id == $category->user_id;
+        });
     }
 
 }

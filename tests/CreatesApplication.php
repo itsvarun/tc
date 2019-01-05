@@ -17,6 +17,8 @@ trait CreatesApplication
 
         $app->make(Kernel::class)->bootstrap();
 
+        // $this->artisan('inspire');
+
         return $app;
     }
 }
